@@ -1,19 +1,10 @@
 <h1><%= title %></h1>
 <p>Welcome to <%= title %></p>
 
-<%= rawdb %>
+<% /*= rawdocresults */ %>
+<br>
+<br>
 
-<dl>
-	<dt>Databases</dt>
-	<dd>
-		<ul>
-		<% for(var i=0; i<databases.length; i++) {%>
-		   <li>
-		   		<b><%= databases[i].name %></b><br>
-	   			Size <%= (databases[i].sizeOnDisk / 1024 / 1024) %>Mb<br>
-		   		Empty: <%= 	databases[i].empty %>
-		   </li>
-		<% } %>
-		</ul>
-	</dd>
-</dl>
+<%- partial('partials/databases') %>
+<br>
+<%- partial('partials/system_info') %>

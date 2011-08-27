@@ -1,0 +1,10 @@
+<dl>
+	<dt>System Information</dt>
+	<dd>
+		<ul>
+			<% for (var i in locals.buildinfo) { %>
+				<li><b><%=: i | capitalize %></b>: <%= locals.buildinfo[i] %></li>
+			<% } %>
+		</ul>
+	</dd>
+</dl>

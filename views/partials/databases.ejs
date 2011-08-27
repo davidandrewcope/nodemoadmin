@@ -1,0 +1,15 @@
+
+<dl>
+	<dt>Databases (<%= locals.databases.databases.length %>) Size: <%= locals.databases.totalSize %></dt>
+	<dd>
+		<ul>
+			<% for (var i in locals.databases.databases) {%>
+			   <li>
+			   		<b>Name:</b> <a href="<%= locals.databases.databases[i].name %>" ><%= locals.databases.databases[i].name %></a><br>
+		   			<b>Size:</b> <%= locals.databases.databases[i].sizeOnDisk %> Bytes<br>
+			   		<b>Empty:</b> <%= 	locals.databases.databases[i].empty %>
+			   </li>
+			<% } %>
+		</ul>
+	</dd>
+</dl>

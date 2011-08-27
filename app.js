@@ -7,6 +7,7 @@ var express = require('express')
 	, mongodb = require('mongodb')
 	, server = new mongodb.Server("127.0.0.1", 27017, {})
 	, util = require('util')
+	, Group = require('./libs/group')
 	, app = module.exports = express.createServer();
 
 // Configuration
@@ -17,7 +18,7 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(express.cookieParser());
-  app.use(express.session({ secret: 'your secret here' }));
+  app.use(express.session({ secret: 'thisIsASuperSecretSessionCookieSaltString' }));
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
 });
@@ -36,20 +37,64 @@ app.get('/', function(req, res){
 	var db = new mongodb.Db('admin', server, {});
 	db.open(function (error, client) {
 		
-		db.executeDbCommand({'listDatabases':1}, function(err, doc) { 
-	  		if (error) throw error;
+		var locals = {buildinfo: {}, databases: {}};
+		var results = new Array();
 		
-			res.render('index', {
+		Group(function(cb) {
+	    	db.executeDbCommand({'buildinfo':1}, function(err, doc) { 
+		  		if (err) throw error;
+		  		 
+		  		for (var i in doc.documents[0]) {
+		  			locals.buildinfo[i] = doc.documents[0][i];
+		  		}
+		  		results.push(doc.documents);
+		  		cb();
+			});
+	   }
+	   , function(cb) {
+			db.executeDbCommand({'listDatabases':1 }, function(err, doc) { 
+		  		if (err) throw error;
+		  		for (var i in doc.documents[0]) {
+		  			locals.databases[i] = doc.documents[0][i];
+		  		}
+		  		results.push(doc.documents);
+		  		cb();
+			});
+		})(function() { 
+			
+		    res.render('index', {
 				title: 'NodeMoAdmin'
-				, locals : {
-					databases: doc.documents[0].databases
-					,rawdb: util.inspect(doc.documents[0].databases)
-				}
+				, 'locals': locals
+				, 'rawdocresults': util.inspect(results)
+			});//res.render
+			
+		}); //Group
+			
+	});//db.open
+
+});//app.get
+
+app.get("/:database", function(req, res){
+	
+	var db = new mongodb.Db(req.params.database, server, {});
+	
+	
+	
+	db.open(function (err, client) {
+		if (err) throw error;
+		
+		db.collectionNames( function(err, doc) { 
+	  		if (err) throw error;
+		
+			res.render('database', {
+				title: 'NodeMoAdmin'
+				, 'collections': doc
 			});
 	  
 		});
+		
 	});
-
+	
 });
 
 app.listen(3000);
