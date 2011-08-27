@@ -1,0 +1,10 @@
+{
+    "name": "nodemoadmin"
+  , "version": "0.0.1"
+  , "private": true
+  , "dependencies": {
+      "express": "2.4.6"
+    , "ejs": ">= 0.0.1"
+    , "mongodb": ">=0.9.6-13"
+  }
+}
