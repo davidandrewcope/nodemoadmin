@@ -1,5 +1,16 @@
-# NodeMoAdmin
-	Node.js based mongodb management tool
+# nodeMoAdmin
+A node.js based mongodb management tool.
+
+## Usage 
+	node app.js
+	
+## Usability Notice
+This software is not complete. Please do not expect anything useful at this point.
+
+## Goals
+To provide similar functionaliy to phpMyAdmin, but on a mongo database, and fronted by node.js. 
+Though the name is based on phpMoAdmin, this is not a node.js port, and will not have similar features.
+This project uses [Express](http://expressjs.com) and [ejs](https://github.com/visionmedia/ejs)
 
 ## License 
 
